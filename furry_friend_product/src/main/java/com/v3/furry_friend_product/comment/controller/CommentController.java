@@ -47,8 +47,8 @@ public class CommentController {
     }
 
     //댓글 수정
-    @PutMapping("/{pid}/{rid}")
-    public ResponseEntity<Long> addReview(@PathVariable("pid") Long pid, @PathVariable("rid") Long rid,
+    @PutMapping("/{rid}")
+    public ResponseEntity<Long> updateReview(@PathVariable("rid") Long rid,
                                           @RequestBody CommentDTO commentDTO, @CookieValue(name = "access_token", required = false) String accessToken){
         commentDTO.setMid(tokenService.getMemberId(accessToken));
         Long result = commentService.modify(commentDTO);
@@ -56,8 +56,8 @@ public class CommentController {
     }
 
     //댓글 삭제
-    @DeleteMapping("/{pid}/{rid}")
-    public ResponseEntity<Long> addReview(@PathVariable("pid") Long pid, @PathVariable("rid") Long rid){
+    @DeleteMapping("/{rid}")
+    public ResponseEntity<Long> deleteReview(@PathVariable("rid") Long rid){
         Long result = commentService.remove(rid);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
