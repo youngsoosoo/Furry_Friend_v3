@@ -34,6 +34,7 @@ public class GatewaySecurityConfig {
             .csrf().disable()
             .logout().disable()
             .authorizeExchange()
+            .pathMatchers("/**").permitAll()
             .anyExchange().authenticated()
             .and()
             .build();

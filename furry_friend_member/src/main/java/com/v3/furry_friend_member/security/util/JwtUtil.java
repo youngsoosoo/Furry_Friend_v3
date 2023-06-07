@@ -2,51 +2,34 @@ package com.v3.furry_friend_member.security.util;
 
 import java.sql.Date;
 import java.time.ZonedDateTime;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 
-import javax.crypto.SecretKey;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.extern.log4j.Log4j2;
 
 @Component
 @Log4j2
 public class JwtUtil {
 
-    // 안전한 256비트 이상의 키 생성
-    private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    @Value("${jwt.secretKey}")
+    private String key;
 
-    // 키를 문자열로 변환하여 저장 또는 사용할 수 있습니다.
-    private final String key = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+    public String generateToken(int minutes, Long memberId) {
 
-    public String generateToken(Map<String, Object> valueMap, int minutes, Long memberId) {
-
-        // Header Part
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("typ", "JWT");
-        headers.put("alg", "HS256");
-
-        // Payload Part Setting
-        Map<String, Object> payloads = new HashMap<>();
-
-        payloads.putAll(valueMap);
-        payloads.put("memberId", memberId);
-
-        int time = 30 * minutes; // 30분
+        Claims claims = Jwts.claims();
+        claims.put("memberId", memberId);
 
         String jwtStr = Jwts.builder()
-            .setHeader(headers)
-            .setClaims(payloads)
+            .claim("memberId", memberId)
             .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
-            .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(time).toInstant()))
-            .signWith(SignatureAlgorithm.HS256, key.getBytes())
+            .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(minutes).toInstant()))
+            .signWith(SignatureAlgorithm.HS256, key)
             .compact();
         return jwtStr;
     }
@@ -57,7 +40,7 @@ public class JwtUtil {
         Map<String, Object> claim = null;
         log.warn(token);
         claim = Jwts.parser()
-            .setSigningKey(key.getBytes()) // Set Key
+            .setSigningKey(key) // Set Key
             .parseClaimsJws(token) // 파싱 및 검증, 실패시 에러
             .getBody();
         return claim;

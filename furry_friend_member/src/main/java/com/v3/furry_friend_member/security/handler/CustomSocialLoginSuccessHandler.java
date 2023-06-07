@@ -3,6 +3,7 @@ package com.v3.furry_friend_member.security.handler;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.crypto.SecretKey;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,8 @@ import com.v3.furry_friend_member.repository.MemberRepository;
 import com.v3.furry_friend_member.repository.TokenRepository;
 import com.v3.furry_friend_member.security.util.JwtUtil;
 
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -55,11 +58,12 @@ public class CustomSocialLoginSuccessHandler implements AuthenticationSuccessHan
         Member member = memberRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("등록된 아이디가 없습니다."));
 
-        Map<String, Object> claim = Map.of("loginId", authentication.getName());
+        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
         // AccessToken 유효기간 30분
-        String accessToken = jwtUtil.generateToken(claim, 30, member.getMid());
+        String accessToken = jwtUtil.generateToken(30, member.getMid());
         // RefreshToken 유효기간 7일
-        String refreshToken = jwtUtil.generateToken(claim, 7 * 24 * 60, member.getMid());
+        String refreshToken = jwtUtil.generateToken(7 * 24 * 60, member.getMid());
 
         log.warn("accessToken" + accessToken);
         log.warn("refreshToken" + refreshToken);

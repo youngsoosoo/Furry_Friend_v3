@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      location: E:\furry_friend_product\src\main\resources\static\productImg
+      max-request-size: 30MB
+      max-file-size: 10MB
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/furry
+    username: root
+    password: 4015pskc
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  thymeleaf:
+    cache: false
+
+logging:
+  level:
+    org.hibernate.type.descriptor.sql: trace
+
+com:
+  soo:
+    apiserver:
+      secret: sooo1122334455
+    upload:
+      path: E:\furry_friend_product\src\main\resources\static\productImg
+
+token:
+  isvalid:
+    http://localhost/isvalid/
