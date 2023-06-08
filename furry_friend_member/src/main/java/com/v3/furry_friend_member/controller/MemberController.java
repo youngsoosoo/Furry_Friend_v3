@@ -1,9 +1,9 @@
 package com.v3.furry_friend_member.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,16 +30,6 @@ public class MemberController {
         }
     }
 
-    //로그인 한 유저만 접속이 가능
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/member")
-    public void member(){
-        log.info("멤버만 허용");
-        //로그인 한 유저 정보
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("로그인 한 유저", authentication.getPrincipal());
-    }
-
     private final MemberService memberService;
 
     //회원 가입 페이지로 이동
@@ -60,6 +50,13 @@ public class MemberController {
             return "redirect:/member/join";
         }
         rattr.addFlashAttribute("result", "success");
+        return "redirect:/member/login";
+    }
+
+    // 로그아웃 후 메인 페이지로 이동
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response, @CookieValue(name = "access_token", required = false) String accessToken){
+        memberService.logout(response, accessToken);
         return "redirect:/member/login";
     }
 }

@@ -18,10 +18,8 @@ import lombok.Getter;
 //생성날짜와 수정날짜를 기록하는 기초 엔티티
 public class BaseEntity {
     @CreatedDate
-    @Column(name = "regdate", updatable = false)
     private LocalDateTime regDate;
 
     @LastModifiedDate
-    @Column(name = "moddate")
     private LocalDateTime modDate;
 }

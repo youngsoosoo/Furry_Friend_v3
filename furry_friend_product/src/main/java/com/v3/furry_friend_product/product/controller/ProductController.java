@@ -1,10 +1,5 @@
 package com.v3.furry_friend_product.product.controller;
 
-import java.util.Arrays;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -47,12 +42,13 @@ public class ProductController {
     }
 
     @GetMapping("/list")
-    public void list(PageRequestDTO pageRequestDTO, Model model, @CookieValue(name = "access_token", required = false) String accessToken){
+    public void list(PageRequestDTO pageRequestDTO, Model model){
 
         PageResponseDTO pageResponseDTO = productService.getList(pageRequestDTO);
         model.addAttribute("result", pageResponseDTO);
-        log.warn(accessToken, tokenService.getMemberId(accessToken));
+
     }
+
     @GetMapping("/read")
     public void read(Long pid, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Model model, @CookieValue(name = "access_token", required = false) String accessToken){
         ProductDTO productDTO = productService.getProduct(pid);

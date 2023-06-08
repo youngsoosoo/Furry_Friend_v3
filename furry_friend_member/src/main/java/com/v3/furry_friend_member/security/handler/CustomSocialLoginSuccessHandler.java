@@ -1,7 +1,6 @@
 package com.v3.furry_friend_member.security.handler;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.crypto.SecretKey;
 import javax.servlet.http.Cookie;

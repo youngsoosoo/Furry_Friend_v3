@@ -34,6 +34,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
         void updatePassword(@Param("mpw") String password, @Param("email") String email);
 
         // @Query("select m from Member m where m.mid = :mid")
-        Member findByMid(Long mid);
+        // Member findByMid(Long mid);
 }
 
