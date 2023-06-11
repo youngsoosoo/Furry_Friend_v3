@@ -29,6 +29,7 @@
 
 # ⚱️ 아키텍처
 `MicroService Architecture`
+![image](https://github.com/youngsoosoo/Furry_Friend_v3/assets/87405853/a6f8814c-a782-4d4c-8353-0116e8cefe6a)
 
 # 👨🏻‍💻 팀
 - 개인 프로젝트(프론트엔드 개발자와 협업할 예정)
