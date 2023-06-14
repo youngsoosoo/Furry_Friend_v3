@@ -1,4 +1,4 @@
 spring:
   config:
     import:
-      - classpath:Furry_Friend_v3_submodule/furry_friend_member/application.yml
+      - classpath:../../../../Furry_Friend_v3_submodule/furry_friend_member/application.yml
